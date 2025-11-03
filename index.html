@@ -22,13 +22,11 @@
                     },
                     animation: { 
                         'fade-in': 'fadeIn 0.7s ease-out', 
-                        'float': 'float 3.5s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 2s infinite'
+                        'float': 'float 3.5s ease-in-out infinite'
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0', transform: 'translateY(15px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
-                        pulseGlow: { '0%, 100%': { boxShadow: '0 0 15px rgba(24, 119, 242, 0.4)' }, '50%': { boxShadow: '0 0 30px rgba(24, 119, 242, 0.8)' } }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } }
                     }
                 }
             }
@@ -38,7 +36,7 @@
         body { 
             background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
             min-height: 100vh; 
-            padding-bottom: 180px; /* ফুটারের জন্য স্পেস */
+            padding-bottom: 160px; /* ফুটারের জন্য স্পেস */
         }
         .glass { 
             background: rgba(255, 255, 255, 0.93); 
@@ -67,69 +65,65 @@
         .spin { animation: spin 1.2s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* === ফিক্সড প্রিমিয়াম ফুটার === */
-        .fixed-footer {
+        /* === চিকন, ছোট আইকন, ফিক্সড ফুটার === */
+        .slim-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 18px 16px;
+            padding: 12px 16px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 -8px 25px rgba(0,0,0,0.08);
             z-index: 1000;
-            animation: pulse-glow 3s infinite;
+            font-size: 0.875rem;
         }
         .footer-title {
-            font-weight: 800;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #1877F2, #42B72A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 0.5px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1a1a1a;
+            letter-spacing: 0.3px;
         }
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 22px;
-            margin: 14px 0;
+            gap: 16px;
+            margin: 8px 0;
         }
         .social-icon {
-            width: 50px;
-            height: 50px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 50%;
-            font-size: 1.5rem;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
         }
         .social-icon:hover {
-            transform: translateY(-6px) scale(1.2);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            transform: translateY(-4px) scale(1.1);
+            background: rgba(255, 255, 255, 0.4);
         }
         .social-icon.fb { color: #1877F2; }
         .social-icon.tg { color: #0088cc; }
         .social-icon.wa { color: #25D366; }
         .copyright {
-            font-size: 0.8rem;
-            color: rgba(0,0,0,0.65);
+            font-size: 0.7rem;
+            color: rgba(0,0,0,0.55);
             font-weight: 500;
         }
 
         @media (max-width: 480px) { 
             .profile-box { height: 260px; }
-            body { padding-bottom: 200px; }
-            .fixed-footer { padding: 16px 12px; }
-            .social-icon { width: 44px; height: 44px; font-size: 1.3rem; }
-            .footer-title { font-size: 1rem; }
+            body { padding-bottom: 180px; }
+            .slim-footer { padding: 10px 12px; }
+            .social-icon { width: 32px; height: 32px; font-size: 1rem; }
+            .footer-title { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -207,9 +201,9 @@
         </div>
     </div>
 
-    <!-- ফিক্সড প্রিমিয়াম ফুটার -->
-    <footer class="fixed-footer">
-        <p class="footer-title">Developed by SAKIB HOSSAIN</p>
+    <!-- চিকন, ছোট আইকন, ফিক্সড ফুটার -->
+    <footer class="slim-footer">
+        <p class="footer-title">Developed by <strong>SHAKIB</strong></p>
         <div class="social-links">
             <a href="https://facebook.com/yourpage" target="_blank" class="social-icon fb">
                 <i class="ri-facebook-fill"></i>
@@ -221,7 +215,7 @@
                 <i class="ri-whatsapp-fill"></i>
             </a>
         </div>
-    
+        <p class="copyright">© 2025 All Rights Reserved</p>
     </footer>
 
     <script>
