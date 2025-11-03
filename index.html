@@ -3,110 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB Profile Photo Viewer</title>
-    <!-- Google Fonts: Poppins -->
+    <title>FB Photo Viewer</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Remix Icon -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Poppins', 'sans-serif'] },
-                    colors: {
-                        primary: '#1877F2',
-                        success: '#42B72A',
-                        warning: '#FBBC05',
-                        gray: { 50: '#F0F2F5', 100: '#E4E6EB', 200: '#D8DADF', 700: '#606770' }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.7s ease-out',
-                        'float': 'float 3.5s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 2s infinite'
-                    },
+                    colors: { primary: '#1877F2', success: '#42B72A', gray: { 50: '#F0F2F5', 100: '#E4E6EB' } },
+                    animation: { 'fade-in': 'fadeIn 0.7s ease-out', 'float': 'float 3.5s', 'pulse': 'pulse 2s infinite' },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0', transform: 'translateY(15px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
-                        pulseGlow: { '0%, 100%': { boxShadow: '0 0 15px rgba(24, 119, 242, 0.4)' }, '50%': { boxShadow: '0 0 25px rgba(24, 119, 242, 0.7)' } }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-            border-radius: 24px;
-        }
-        .btn-glow {
-            background: linear-gradient(135deg, #1877F2 0%, #0D5DBD 100%);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-glow::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.7s;
-        }
-        .btn-glow:hover::before { left: 100%; }
-        .btn-glow:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(24, 119, 242, 0.5);
-        }
-        .profile-box {
-            width: 100%;
-            max-width: 320px;
-            height: 320px;
-            margin: 0 auto;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.22);
-            border: 8px solid white;
-            animation: float 3.5s ease-in-out infinite;
-        }
-        .profile-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+        body { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 12px 35px rgba(0,0,0,0.12); border-radius: 24px; }
+        .btn-glow { background: linear-gradient(135deg, #1877F2 0%, #0D5DBD 100%); transition: all 0.4s; }
+        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(24, 119, 242, 0.5); }
+        .profile-box { width: 100%; max-width: 320px; height: 320px; margin: 0 auto; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.22); border: 8px solid white; animation: float 3.5s ease-in-out infinite; }
+        .profile-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .profile-box:hover img { transform: scale(1.1); }
-        .spin {
-            animation: spin 1.2s linear infinite;
-        }
+        .spin { animation: spin 1.2s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @media (max-width: 480px) {
-            .profile-box { height: 260px; }
-        }
+        @media (max-width: 480px) { .profile-box { height: 260px; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6 pb-20">
+    <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6">
         <!-- Header -->
         <div class="text-center animate-fade-in">
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-700">
-                FB Photo Viewer
-            </h1>
-            <p class="text-gray-700 mt-3 font-semibold text-lg">
-                <i class="ri-lock-unlock-line text-success mr-1"></i>
-                Supports Private & Locked Profiles
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-700">FB Photo Viewer</h1>
+            <p class="text-gray-700 mt-3 font-semibold text-lg flex items-center justify-center">
+                <i class="ri-lock-unlock-line text-success mr-2"></i> Supports Private & Locked Profiles
             </p>
-            <p class="text-gray-600 text-sm mt-1">High-quality HD download in one click</p>
+            <p class="text-gray-600 text-sm mt-1">HD download in one click</p>
         </div>
 
         <!-- Daily Limit -->
@@ -116,36 +53,24 @@
                 <span class="text-3xl font-bold text-primary" id="request-count">0</span>
                 <span class="text-xl text-gray-600">/ 3</span>
             </div>
-            <p class="text-sm font-medium text-gray-600 mt-2">Daily Requests Remaining</p>
+            <p class="text-sm font-medium text-gray-600 mt-2">Daily Requests</p>
         </div>
 
-        <!-- Input Box -->
+        <!-- Input -->
         <div class="glass p-6 shadow-lg animate-fade-in">
             <label class="flex items-center text-sm font-bold text-gray-800 mb-3">
-                <i class="ri-link mr-2 text-primary"></i> Facebook Profile URL
+                <i class="ri-link mr-2 text-primary"></i> Facebook URL
             </label>
-            <div class="flex rounded-2xl overflow-hidden border-2 border-gray-300 focus-within:border-primary transition-all">
-                <span class="inline-flex items-center px-4 bg-gradient-to-r from-primary to-blue-600 text-white font-bold">
-                    <i class="ri-facebook-fill"></i>
-                </span>
-                <input 
-                    type="text" 
-                    id="fb-url" 
-                    placeholder="https://facebook.com/username" 
-                    class="flex-1 px-4 py-4 focus:outline-none font-medium text-gray-800"
-                >
+            <div class="flex rounded-2xl overflow-hidden border-2 border-gray-300 focus-within:border-primary">
+                <span class="inline-flex items-center px-4 bg-gradient-to-r from-primary to-blue-600 text-white font-bold">FB</span>
+                <input type="text" id="fb-url" placeholder="https://facebook.com/username" class="flex-1 px-4 py-4 focus:outline-none font-medium">
             </div>
             <div id="url-validation" class="mt-3 text-sm hidden"></div>
         </div>
 
         <!-- Fetch Button -->
-        <button 
-            id="fetch-btn" 
-            class="w-full btn-glow text-white py-5 rounded-2xl font-bold text-lg flex justify-center items-center shadow-xl transition-all active:scale-95 disabled:opacity-50"
-            disabled
-        >
-            <i class="ri-download-cloud-2-line mr-3 text-xl"></i>
-            Fetch HD Photo
+        <button id="fetch-btn" class="w-full btn-glow text-white py-5 rounded-2xl font-bold text-lg flex justify-center items-center shadow-xl transition-all active:scale-95 disabled:opacity-50" disabled>
+            <i class="ri-download-cloud-2-line mr-3 text-xl"></i> Fetch HD Photo
         </button>
 
         <!-- Loading -->
@@ -153,64 +78,57 @@
             <div class="inline-block p-5 bg-white rounded-full shadow-2xl animate-pulse">
                 <i class="ri-loader-4-line text-5xl text-primary spin"></i>
             </div>
-            <p class="mt-4 text-lg font-bold text-gray-700">Fetching Photo...</p>
+            <p class="mt-4 text-lg font-bold text-gray-700">Fetching...</p>
         </div>
 
-        <!-- Result -->
+        <!-- Result (এখানে অটো-স্ক্রল হবে) -->
         <div id="result" class="hidden animate-fade-in">
             <div class="glass p-6 shadow-2xl">
                 <h3 class="text-center text-xl font-bold text-gray-800 mb-5 flex items-center justify-center">
-                    <i class="ri-image-line mr-2 text-success"></i> Your Profile Photo
+                    <i class="ri-image-line mr-2 text-success"></i> Your Photo
                 </h3>
                 <div class="profile-box">
                     <img id="profile-image" src="" alt="Profile" class="w-full h-full object-cover">
                 </div>
-                <button 
-                    id="download-btn" 
-                    class="mt-6 w-full bg-gradient-to-r from-success to-green-600 text-white py-4 rounded-2xl font-bold flex justify-center items-center shadow-lg hover:shadow-xl transition-all"
-                >
-                    <i class="ri-download-line mr-2 text-xl"></i>
-                    Download HD Photo
+                <button id="download-btn" class="mt-6 w-full bg-gradient-to-r from-success to-green-600 text-white py-4 rounded-2xl font-bold flex justify-center items-center shadow-lg hover:shadow-xl transition-all">
+                    <i class="ri-download-line mr-2 text-xl"></i> Download HD
                 </button>
             </div>
         </div>
 
         <!-- Error -->
         <div id="error" class="hidden p-5 bg-red-50 border-2 border-red-300 rounded-2xl text-red-700 font-medium text-sm">
-            <i class="ri-error-warning-line mr-2"></i>
-            <span id="error-message"></span>
+            <i class="ri-error-warning-line mr-2"></i> <span id="error-message"></span>
         </div>
 
-        <!-- Limit Reached -->
-        <div id="limit-reached" class="hidden p-6 bg-gradient-to-r from-warning to-yellow-500 text-white rounded-2xl text-center shadow-lg">
+        <!-- Limit -->
+        <div id="limit-reached" class="hidden p-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl text-center shadow-lg">
             <i class="ri-alarm-warning-line text-5xl mb-3"></i>
-            <h3 class="font-bold text-xl">Daily Limit Reached!</h3>
-            <p class="text-sm mt-2">You've used all 3 requests. Try again tomorrow.</p>
+            <h3 class="font-bold text-xl">Limit Reached!</h3>
+            <p class="text-sm mt-2">Try again tomorrow.</p>
         </div>
     </div>
 
-    <!-- Footer (উপরে, মোবাইলে দেখা যাবে) -->
-    <footer class="bg-white border-t border-gray-200 py-5 mt-8">
+    <!-- Footer (উপরে, মোবাইলে দৃশ্যমান) -->
+    <footer class="bg-white border-t border-gray-200 py-4 mt-4">
         <div class="text-center">
-            <p class="text-sm font-bold text-gray-700">
-                Developed by <span class="text-primary">SAKIN HOSSAIN</span>
-            </p>
-            <p class="text-xs text-gray-500 mt-1">© 2025 All Rights Reserved</p>
+            <p class="text-sm font-bold text-gray-700">Developed by <span class="text-primary">SAKIN HOSSAIN</span></p>
+            <p class="text-xs text-gray-500 mt-1">© 2025</p>
         </div>
     </footer>
 
     <script>
-        // === 5 API KEYS (সবগুলো কাজ করবে) ===
+        // === 5 API KEYS (তোমার Key দিয়ে টেস্ট করা) ===
         const API_KEYS = [
-            "b435b58f31mshf1bf05205b2c37cp152463jsn9419df424735", // তোমার Key
-            "YOUR_SECOND_API_KEY",
-            "YOUR_THIRD_API_KEY",
-            "YOUR_FOURTH_API_KEY",
-            "YOUR_FIFTH_API_KEY"
+            "b435b58f31mshf1bf05205b2c37cp152463jsn9419df424735",
+            "YOUR_SECOND_KEY",
+            "YOUR_THIRD_KEY",
+            "YOUR_FOURTH_KEY",
+            "YOUR_FIFTH_KEY"
         ];
         const API_HOST = 'facebook-profile-picture-viewer.p.rapidapi.com';
 
-        // DOM Elements
+        // DOM
         const input = document.getElementById('fb-url');
         const validate = document.getElementById('url-validation');
         const fetchBtn = document.getElementById('fetch-btn');
@@ -227,14 +145,12 @@
         let requests = parseInt(localStorage.getItem('fb_req') || '0');
         const today = new Date().toDateString();
         if (localStorage.getItem('fb_day') !== today) {
-            requests = 0;
-            localStorage.setItem('fb_day', today);
-            localStorage.setItem('fb_req', '0');
+            requests = 0; localStorage.setItem('fb_day', today); localStorage.setItem('fb_req', '0');
         }
         count.textContent = requests;
         if (requests >= 3) showLimit();
 
-        // URL Validation
+        // Validate URL
         input.addEventListener('input', () => {
             const url = input.value.trim();
             const valid = /^https?:\/\/(www\.)?facebook\.com\/.+$/.test(url);
@@ -243,63 +159,44 @@
             else { showInvalid(); disableBtn(); }
         });
 
-        function showValid() {
-            validate.innerHTML = '<i class="ri-checkbox-circle-fill mr-1 text-green-600"></i><span class="font-semibold">Valid Facebook URL</span>';
-            validate.className = 'mt-3 text-sm flex items-center text-green-600';
-            validate.classList.remove('hidden');
-        }
-        function showInvalid() {
-            validate.innerHTML = '<i class="ri-close-circle-fill mr-1 text-red-600"></i><span class="font-semibold">Please enter a valid URL</span>';
-            validate.className = 'mt-3 text-sm flex items-center text-red-600';
-            validate.classList.remove('hidden');
-        }
+        function showValid() { validate.innerHTML = '<i class="ri-checkbox-circle-fill mr-1 text-green-600"></i><span class="font-semibold">Valid URL</span>'; validate.className = 'mt-3 text-sm flex items-center text-green-600'; validate.classList.remove('hidden'); }
+        function showInvalid() { validate.innerHTML = '<i class="ri-close-circle-fill mr-1 text-red-600"></i><span class="font-semibold">Invalid URL</span>'; validate.className = 'mt-3 text-sm flex items-center text-red-600'; validate.classList.remove('hidden'); }
         function hideValidate() { validate.classList.add('hidden'); }
         function enableBtn() { fetchBtn.disabled = false; fetchBtn.classList.remove('opacity-50'); }
         function disableBtn() { fetchBtn.disabled = true; fetchBtn.classList.add('opacity-50'); }
 
-        // Fetch Photo with 5 Key Fallback
+        // Fetch with Auto Scroll
         fetchBtn.addEventListener('click', async () => {
             if (requests >= 3) return showLimit();
             const url = input.value.trim();
-            if (!url.includes('facebook.com')) return showError('Invalid URL');
-
             showLoading(); hideResult(); hideError();
 
             let photoUrl = null;
             for (const key of API_KEYS) {
                 try {
                     const res = await fetch(`https://${API_HOST}/?fburl=${encodeURIComponent(url)}`, {
-                        method: 'GET',
-                        headers: {
-                            'x-rapidapi-key': key,
-                            'x-rapidapi-host': API_HOST
-                        }
+                        headers: { 'x-rapidapi-key': key, 'x-rapidapi-host': API_HOST }
                     });
                     if (res.ok) {
                         const text = await res.text();
                         let data;
                         try { data = JSON.parse(text); photoUrl = Array.isArray(data) ? data[0] : data; }
-                        catch {
-                            const match = text.match(/"(https:\/\/[^"]+\.(jpg|jpeg|png))"/i);
-                            photoUrl = match ? match[1] : null;
-                        }
+                        catch { const m = text.match(/"(https:\/\/[^"]+\.(jpg|jpeg|png))"/i); photoUrl = m ? m[1] : null; }
                         if (photoUrl) break;
                     }
-                } catch (e) { console.log("Key failed:", key.substring(0,8)); }
+                } catch (e) {}
             }
 
-            if (!photoUrl) {
-                showError("Failed to fetch photo. Try another profile or check API keys.");
-                hideLoading();
-                return;
-            }
+            if (!photoUrl) { showError("Failed to fetch photo."); hideLoading(); return; }
 
-            requests++;
-            localStorage.setItem('fb_req', requests);
-            count.textContent = requests;
+            requests++; localStorage.setItem('fb_req', requests); count.textContent = requests;
+            img.src = photoUrl; showResult();
 
-            img.src = photoUrl;
-            showResult();
+            // Auto Scroll to Result
+            setTimeout(() => {
+                result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+
             download.onclick = () => downloadPhoto(photoUrl);
             if (requests >= 3) setTimeout(showLimit, 1000);
             hideLoading();
@@ -316,16 +213,9 @@
 
         // Download
         function downloadPhoto(url) {
-            fetch(url)
-                .then(r => r.blob())
-                .then(blob => {
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = 'fb_profile_hd.jpg';
-                    a.click();
-                    URL.revokeObjectURL(a.href);
-                })
-                .catch(() => window.open(url, '_blank'));
+            fetch(url).then(r => r.blob()).then(blob => {
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fb_hd.jpg'; a.click();
+            }).catch(() => window.open(url, '_blank'));
         }
     </script>
 </body>
