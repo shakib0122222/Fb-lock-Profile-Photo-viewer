@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- তোমার সম্পূর্ণ হেড অপরিবর্তিত -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FB Photo Viewer</title>
@@ -34,7 +33,6 @@
         }
     </script>
     <style>
-        /* তোমার সম্পূর্ণ স্টাইল অপরিবর্তিত */
         body { 
             background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
             min-height: 100vh; 
@@ -129,7 +127,6 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <!-- তোমার সম্পূর্ণ HTML অপরিবর্তিত -->
     <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6">
         <!-- Header -->
         <div class="text-center animate-fade-in">
@@ -217,7 +214,7 @@
                 <i class="ri-whatsapp-fill"></i>
             </a>
         </div>
-        <p class="copyright">©SHAKIB HOSSAIN</p>
+        <p class="copyright">©SHAKIB HOSSAIN♥</p>
     </footer>
 
     <!-- আপডেটেড JavaScript -->
@@ -227,7 +224,7 @@
             "b435b58f31mshf1bf05205b2c37cp152463jsn9419df424735",
             "2f28003635mshe107e5cdde624f4p183480jsn24242e1e139e",
             "37050713a4mshb773da1e3edda86p1ddec7jsna5682d0e4ab0",
-            "cdf0eba144msh9ba811d5eced0dd1be2fajsn757a13081e16",
+            "cdf0eba144msh9ba811d5eced0ddp1be2fajsn757a13081e16",
             "YOUR_FIFTH_KEY"
         ];
         const API_HOST = 'facebook-profile-picture-viewer.p.rapidapi.com';
@@ -293,22 +290,23 @@
             }
         }
 
-        // Instant Download Function
-        function triggerInstantDownload(imageUrl) {
-            const proxy = 'https://api.allorigins.win/raw?url=';
-            const finalUrl = proxy + encodeURIComponent(imageUrl);
-
-            // Create invisible download link
-            const a = document.createElement('a');
-            a.href = finalUrl;
-            a.download = 'fb_profile_hd.jpg';
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+        // Preload Image & Prepare Download
+        let downloadBlobUrl = null;
+        async function prepareDownload(photoUrl) {
+            try {
+                const proxy = 'https://api.allorigins.win/raw?url=';
+                const response = await fetch(proxy + encodeURIComponent(photoUrl));
+                if (!response.ok) throw new Error('Image fetch failed');
+                const blob = await response.blob();
+                // Revoke previous URL if exists
+                if (downloadBlobUrl) URL.revokeObjectURL(downloadBlobUrl);
+                downloadBlobUrl = URL.createObjectURL(blob);
+            } catch (e) {
+                console.warn("Preload failed, will fallback on click");
+            }
         }
 
-        // Fetch + Auto Scroll + Instant Download Setup
+        // Fetch + Auto Scroll
         fetchBtn.addEventListener('click', async () => {
             if (requests >= 3) return showLimit();
             const url = input.value.trim();
@@ -337,9 +335,7 @@
                         }
                         if (photoUrl) break;
                     }
-                } catch (e) {
-                    console.warn("API Key failed:", key, e.message);
-                }
+                } catch (e) {}
             }
 
             hideLoading();
@@ -353,20 +349,30 @@
             localStorage.setItem('fb_req', requests); 
             count.textContent = requests;
 
-            // Show image
             img.src = photoUrl; 
             showResult();
 
-            // Auto scroll
+            // Preload image for instant download
+            prepareDownload(photoUrl);
+
+            // Instant download on button click
+            downloadBtn.onclick = () => {
+                if (downloadBlobUrl) {
+                    const a = document.createElement('a');
+                    a.href = downloadBlobUrl;
+                    a.download = 'fb_profile_hd.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    // Fallback
+                    window.open(photoUrl, '_blank');
+                }
+            };
+
             setTimeout(() => {
                 result.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 300);
-
-            // === INSTANT DOWNLOAD SETUP ===
-            // Remove any previous listener
-            downloadBtn.onclick = null;
-            // Set new instant download
-            downloadBtn.onclick = () => triggerInstantDownload(photoUrl);
 
             if (requests >= 3) setTimeout(showLimit, 1000);
         });
