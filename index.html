@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- তোমার সম্পূর্ণ হেড অংশ অপরিবর্তিত -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FB Photo Viewer</title>
@@ -33,10 +34,11 @@
         }
     </script>
     <style>
+        /* তোমার সম্পূর্ণ স্টাইল অপরিবর্তিত */
         body { 
             background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
             min-height: 100vh; 
-            padding-bottom: 160px; /* ফুটারের জন্য স্পেস */
+            padding-bottom: 160px;
         }
         .glass { 
             background: rgba(255, 255, 255, 0.93); 
@@ -65,7 +67,6 @@
         .spin { animation: spin 1.2s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* === চিকন, ছোট আইকন, ফিক্সড ফুটার === */
         .slim-footer {
             position: fixed;
             bottom: 0;
@@ -128,6 +129,7 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    <!-- তোমার সম্পূর্ণ HTML অপরিবর্তিত -->
     <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6">
         <!-- Header -->
         <div class="text-center animate-fade-in">
@@ -201,7 +203,7 @@
         </div>
     </div>
 
-    <!-- চিকন, ছোট আইকন, ফিক্সড ফুটার -->
+    <!-- ফুটার -->
     <footer class="slim-footer">
         <p class="footer-title"> <strong></strong></p>
         <div class="social-links">
@@ -218,6 +220,7 @@
         <p class="copyright">©SHAKIB HOSSAIN♥</p>
     </footer>
 
+    <!-- সংশোধিত JavaScript -->
     <script>
         // === 5 API KEYS ===
         const API_KEYS = [
@@ -246,7 +249,9 @@
         let requests = parseInt(localStorage.getItem('fb_req') || '0');
         const today = new Date().toDateString();
         if (localStorage.getItem('fb_day') !== today) {
-            requests = 0; localStorage.setItem('fb_day', today); localStorage.setItem('fb_req', '0');
+            requests = 0; 
+            localStorage.setItem('fb_day', today); 
+            localStorage.setItem('fb_req', '0');
         }
         count.textContent = requests;
         if (requests >= 3) showLimit();
@@ -260,11 +265,33 @@
             else { showInvalid(); disableBtn(); }
         });
 
-        function showValid() { validate.innerHTML = '<i class="ri-checkbox-circle-fill mr-1 text-green-600"></i><span class="font-semibold">Valid URL</span>'; validate.className = 'mt-3 text-sm flex items-center text-green-600'; validate.classList.remove('hidden'); }
-        function showInvalid() { validate.innerHTML = '<i class="ri-close-circle-fill mr-1 text-red-600"></i><span class="font-semibold">Invalid URL</span>'; validate.className = 'mt-3 text-sm flex items-center text-red-600'; validate.classList.remove('hidden'); }
+        function showValid() { 
+            validate.innerHTML = '<i class="ri-checkbox-circle-fill mr-1 text-green-600"></i><span class="font-semibold">Valid URL</span>'; 
+            validate.className = 'mt-3 text-sm flex items-center text-green-600'; 
+            validate.classList.remove('hidden'); 
+        }
+        function showInvalid() { 
+            validate.innerHTML = '<i class="ri-close-circle-fill mr-1 text-red-600"></i><span class="font-semibold">Invalid URL</span>'; 
+            validate.className = 'mt-3 text-sm flex items-center text-red-600'; 
+            validate.classList.remove('hidden'); 
+        }
         function hideValidate() { validate.classList.add('hidden'); }
         function enableBtn() { fetchBtn.disabled = false; fetchBtn.classList.remove('opacity-50'); }
         function disableBtn() { fetchBtn.disabled = true; fetchBtn.classList.add('opacity-50'); }
+
+        // Fetch with Timeout
+        async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(url, { ...options, signal: controller.signal });
+                clearTimeout(id);
+                return response;
+            } catch (err) {
+                clearTimeout(id);
+                throw err;
+            }
+        }
 
         // Fetch + Auto Scroll
         fetchBtn.addEventListener('click', async () => {
@@ -274,33 +301,77 @@
 
             let photoUrl = null;
             for (const key of API_KEYS) {
+                if (key === "YOUR_FIFTH_KEY") continue; // Skip placeholder
                 try {
-                    const res = await fetch(`https://${API_HOST}/?fburl=${encodeURIComponent(url)}`, {
-                        headers: { 'x-rapidapi-key': key, 'x-rapidapi-host': API_HOST }
-                    });
+                    const res = await fetchWithTimeout(`https://${API_HOST}/?fburl=${encodeURIComponent(url)}`, {
+                        headers: { 
+                            'x-rapidapi-key': key, 
+                            'x-rapidapi-host': API_HOST 
+                        }
+                    }, 10000);
+
                     if (res.ok) {
                         const text = await res.text();
                         let data;
-                        try { data = JSON.parse(text); photoUrl = Array.isArray(data) ? data[0] : data; }
-                        catch { const m = text.match(/"(https:\/\/[^"]+\.(jpg|jpeg|png))"/i); photoUrl = m ? m[1] : null; }
+                        try { 
+                            data = JSON.parse(text); 
+                            photoUrl = Array.isArray(data) ? data[0] : data; 
+                        } catch { 
+                            const m = text.match(/"(https:\/\/[^"]+\.(jpg|jpeg|png))"/i); 
+                            photoUrl = m ? m[1] : null; 
+                        }
                         if (photoUrl) break;
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.warn("API Key failed:", key, e.message);
+                }
             }
 
-            if (!photoUrl) { showError("Failed to fetch photo."); hideLoading(); return; }
+            hideLoading();
 
-            requests++; localStorage.setItem('fb_req', requests); count.textContent = requests;
-            img.src = photoUrl; showResult();
+            if (!photoUrl) { 
+                showError("Failed to fetch photo. Try another URL."); 
+                return; 
+            }
+
+            requests++; 
+            localStorage.setItem('fb_req', requests); 
+            count.textContent = requests;
+
+            img.src = photoUrl; 
+            showResult();
 
             setTimeout(() => {
                 result.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 300);
 
+            // Download with CORS proxy
             download.onclick = () => downloadPhoto(photoUrl);
             if (requests >= 3) setTimeout(showLimit, 1000);
-            hideLoading();
         });
+
+        // Download with CORS Proxy
+        function downloadPhoto(url) {
+            const proxy = 'https://api.allorigins.win/raw?url=';
+            fetch(proxy + encodeURIComponent(url))
+                .then(r => {
+                    if (!r.ok) throw new Error('Failed to fetch image');
+                    return r.blob();
+                })
+                .then(blob => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'fb_profile_hd.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href);
+                })
+                .catch(() => {
+                    // Fallback: Open in new tab
+                    window.open(url, '_blank');
+                });
+        }
 
         // Helpers
         function showLoading() { loading.classList.remove('hidden'); }
@@ -310,13 +381,6 @@
         function showError(msg) { errorMsg.textContent = msg; error.classList.remove('hidden'); }
         function hideError() { error.classList.add('hidden'); }
         function showLimit() { limit.classList.remove('hidden'); disableBtn(); }
-
-        // Download
-        function downloadPhoto(url) {
-            fetch(url).then(r => r.blob()).then(blob => {
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fb_hd.jpg'; a.click();
-            }).catch(() => window.open(url, '_blank'));
-        }
     </script>
 </body>
 </html>
