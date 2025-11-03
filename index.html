@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB Lock id Profile Viewer</title>
+    <title>FB Photo Viewer</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,25 +30,64 @@
         }
     </script>
     <style>
-        body { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); min-height: 100vh; }
-        .glass { background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 12px 35px rgba(0,0,0,0.12); border-radius: 24px; }
-        .btn-glow { background: linear-gradient(135deg, #1877F2 0%, #0D5DBD 100%); transition: all 0.4s; }
-        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(24, 119, 242, 0.5); }
-        .profile-box { width: 100%; max-width: 320px; height: 320px; margin: 0 auto; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.22); border: 8px solid white; animation: float 3.5s ease-in-out infinite; }
+        body { 
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
+            min-height: 100vh; 
+            position: relative;
+            padding-bottom: 80px; /* ফুটারের জন্য স্পেস */
+        }
+        .glass { 
+            background: rgba(255, 255, 255, 0.93); 
+            backdrop-filter: blur(14px); 
+            border: 1px solid rgba(255,255,255,0.6); 
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12); 
+            border-radius: 24px; 
+        }
+        .btn-glow { 
+            background: linear-gradient(135deg, #1877F2 0%, #0D5DBD 100%); 
+            transition: all 0.4s; 
+        }
+        .btn-glow:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(24, 119, 242, 0.5); 
+        }
+        .profile-box { 
+            width: 100%; max-width: 320px; height: 320px; margin: 0 auto; 
+            border-radius: 28px; overflow: hidden; 
+            box-shadow: 0 20px 45px rgba(0,0,0,0.22); 
+            border: 8px solid white; 
+            animation: float 3.5s ease-in-out infinite; 
+        }
         .profile-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .profile-box:hover img { transform: scale(1.1); }
         .spin { animation: spin 1.2s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .social-icon { transition: transform 0.3s; }
         .social-icon:hover { transform: scale(1.3); }
+
+        /* ফুটার - ব্লার + উপরে + সবসময় দৃশ্যমান */
+        .footer-blur {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 10px 0;
+            z-index: 50;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
+        }
+
         @media (max-width: 480px) { 
             .profile-box { height: 260px; }
-            footer { padding: 8px 0 !important; }
+            body { padding-bottom: 100px; }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6 pb-1">
+    <div class="flex-1 container max-w-md mx-auto px-4 py-6 space-y-6">
         <!-- Header -->
         <div class="text-center animate-fade-in">
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-700">FB Photo Viewer</h1>
@@ -121,21 +160,21 @@
         </div>
     </div>
 
-    <!-- Footer - সবচেয়ে উপরে + বড় টেক্সট -->
-    <footer class="bg-white border-t border-gray-200 py-3 mt-0">
-        <div class="text-center px-2">
+    <!-- Footer - ব্লার + ফিক্সড + উপরে + সবসময় দৃশ্যমান -->
+    <footer class="footer-blur">
+        <div class="text-center px-4">
             <p class="text-sm font-bold text-gray-700">
                 Developed by <span class="text-primary">SAKIB HOSSAIN</span>
             </p>
             <div class="flex justify-center space-x-4 mt-2">
                 <a href="https://facebook.com/yourpage" target="_blank" class="social-icon">
-                    <i class="ri-facebook-fill text-2xl text-fb"></i>
+                    <i class="ri-facebook-fill text-xl text-fb"></i>
                 </a>
                 <a href="https://t.me/yourchannel" target="_blank" class="social-icon">
-                    <i class="ri-telegram-fill text-2xl text-tg"></i>
+                    <i class="ri-telegram-fill text-xl text-tg"></i>
                 </a>
                 <a href="https://wa.me/8801xxxxxxxxx" target="_blank" class="social-icon">
-                    <i class="ri-whatsapp-fill text-2xl text-wa"></i>
+                    <i class="ri-whatsapp-fill text-xl text-wa"></i>
                 </a>
             </div>
             
